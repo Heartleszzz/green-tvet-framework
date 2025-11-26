@@ -3,177 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green TVET Interactive</title>
-    <style>
-        /* --- MODERN RESET --- */
-        body { 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
-            background-color: transparent; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-        }
-        
-        .container {
-            position: relative;
-            width: 100%;
-            max-width: 800px; 
-            margin: 0 auto;
-            /* Flex center to keep it neat */
-            display: flex;
-            justify-content: center;
-        }
+    <title>Green TVET Interactive – Modern UI</title>
 
-        .main-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            /* Subtle shadow for depth */
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-        }
+<style>
+/* CORE RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    background:transparent;
+    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    overflow:hidden;
+    display:flex;justify-content:center;
+}
 
-        /* --- THE CLICK ZONES --- */
-        .zone {
-            position: absolute;
-            width: 17%;  
-            height: 25%; 
-            border-radius: 50%; 
-            cursor: pointer;
-            z-index: 10;
-            
-            /* --- MODERN ANIMATION VARIABLES --- */
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            
-            /* IMPORTANT: CHANGE 'rgba(255, 0, 0, 0.3)' TO 'transparent' 
-               BELOW WHEN YOU ARE DONE ALIGNING! 
-            */
-            background: rgba(255, 0, 0, 0.3); /* <--- DEBUG COLOR */
-            border: 1px solid rgba(255, 0, 0, 0.5); /* <--- DEBUG BORDER */
-        }
+/* FRAME WRAPPER */
+.container{
+    position:relative;
+    width:100%;
+    max-width:800px;
+}
 
-        /* IDLE STATE: Subtle Pulse so users know it's clickable */
-        .zone {
-            animation: pulse-animation 3s infinite;
-        }
+/* MAIN IMAGE w/ depth */
+.main-img{
+    width:100%;display:block;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
 
-        @keyframes pulse-animation {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
+/* ==============================
+   🔘 HOTSPOT INTERACTIVE CIRCLES
+================================*/
+.zone{
+    position:absolute;
+    width:16.5%;height:24%;
+    cursor:pointer;
+    border-radius:50%;
+    z-index:5;
+    backdrop-filter:blur(3px);
 
-        /* HOVER STATE: Scale up and Glow */
-        .zone:hover {
-            transform: scale(1.1) translateY(-2px);
-            background: rgba(255, 255, 255, 0.1) !important; /* Glassy highlight */
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 
-                        inset 0 0 10px rgba(255,255,255,0.3);
-            border: 2px solid rgba(255,255,255,0.8);
-            animation: none; /* Stop pulsing when hovered */
-        }
+    /* Invisible default, visible interaction */
+    background:rgba(255,255,255,.02);
+    border:1px solid rgba(255,255,255,.05);
 
-        /* --- MODERN TOOLTIP --- */
-        .zone::after {
-            content: attr(data-title); 
-            position: absolute;
-            bottom: 110%; /* Start position */
-            left: 50%;
-            transform: translateX(-50%) translateY(10px); /* Start slightly lower */
-            
-            /* Glassmorphism Style */
-            background: rgba(30, 30, 30, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-            
-            /* Shadow and Border */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            
-            /* Hide by default */
-            opacity: 0; 
-            pointer-events: none;
-            
-            /* Smooth Slide Up Animation */
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+    /* Subtle breathing glow – premium feel */
+    animation:breath 4s ease-in-out infinite;
+    transition:.25s ease;
+}
+@keyframes breath{
+    0%,100%{box-shadow:0 0 0 rgba(255,255,255,.08);}
+    50%{box-shadow:0 0 18px rgba(255,255,255,.15);}
+}
 
-        /* Tooltip Arrow */
-        .zone::before {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            border-width: 6px;
-            border-style: solid;
-            border-color: rgba(30, 30, 30, 0.85) transparent transparent transparent;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
+/* HOVER STATE */
+.zone:hover{
+    transform:scale(1.07);
+    background:rgba(255,255,255,.12);
+    box-shadow:0 0 16px rgba(255,255,255,.35);
+}
 
-        /* Show Tooltip on Hover */
-        .zone:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-5px); /* Slide Up */
-        }
-        .zone:hover::before {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-5px); /* Slide Arrow Up */
-        }
+/* ==============================
+   🏷 Modern Tooltip Style
+================================*/
+.zone::after{
+    content:attr(data-title);
+    position:absolute;
+    bottom:115%;left:50%;
+    transform:translateX(-50%) translateY(8px);
+    opacity:0;pointer-events:none;
 
-        /* --- POSITIONS (Fine-tuned for your Bordered Image) --- */
-        
-        /* 1. Top Center (Training) */
-        .pos-top { top: 20%; left: 41.5%; }
+    padding:8px 14px;
+    font-size:13px;font-weight:600;
+    white-space:nowrap;
 
-        /* 2. Right Middle (Research) */
-        .pos-right { top: 38%; left: 60%; }
+    /* Modern glass card */
+    background:rgba(22,22,22,.85);
+    backdrop-filter:blur(12px) saturate(1.4);
+    border-radius:10px;
 
-        /* 3. Bottom Right (Campus) */
-        .pos-bot-right { top: 61%; left: 53%; }
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 8px 22px rgba(0,0,0,.25),
+               inset 0 0 8px rgba(255,255,255,.05);
 
-        /* 4. Bottom Left (Culture) */
-        .pos-bot-left { top: 61%; left: 30%; }
+    transition:.28s cubic-bezier(.23,1,.32,1);
+}
 
-        /* 5. Left Middle (Workplace) */
-        .pos-left { top: 38%; left: 23%; }
+/* Tooltip Arrow */
+.zone::before{
+    content:"";
+    position:absolute;
+    bottom:108%;left:50%;
+    transform:translateX(-50%) translateY(8px);
+    border:6px solid transparent;
+    border-bottom-color:rgba(22,22,22,.85);
+    opacity:0;
+    transition:.28s cubic-bezier(.23,1,.32,1);
+}
 
-    </style>
+/* Tooltip Appears */
+.zone:hover::after,
+.zone:hover::before{
+    opacity:1;
+    transform:translateX(-50%) translateY(-5px);
+}
+
+/* ==============================
+   📍 Hotspot Coordinates
+================================*/
+.pos-top{top:20%;left:41.5%;}
+.pos-right{top:38%;left:60%;}
+.pos-bot-right{top:61%;left:53%;}
+.pos-bot-left{top:61%;left:30%;}
+.pos-left{top:38%;left:23%;}
+</style>
 </head>
+
 <body>
+<div class="container">
+    <img src="framework.png" class="main-img" alt="Green TVET Framework">
 
-    <div class="container">
-        <img src="framework.png" alt="Green TVET Framework" class="main-img">
+    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd"
+       target="_top" class="zone pos-top"
+       data-title="Training Regulations & Curriculum"></a>
 
-        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd" 
-           target="_top" class="zone pos-top" 
-           data-title="Training Regulations & Curriculum"></a>
+    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd"
+       target="_top" class="zone pos-right"
+       data-title="Green Research"></a>
 
-        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd" 
-           target="_top" class="zone pos-right" 
-           data-title="Green Research"></a>
+    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd"
+       target="_top" class="zone pos-bot-right"
+       data-title="Green Campus"></a>
 
-        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd" 
-           target="_top" class="zone pos-bot-right" 
-           data-title="Green Campus"></a>
+    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd"
+       target="_top" class="zone pos-bot-left"
+       data-title="Green Institutional Culture"></a>
 
-        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd" 
-           target="_top" class="zone pos-bot-left" 
-           data-title="Green Institutional Culture"></a>
-
-        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd" 
-           target="_top" class="zone pos-left" 
-           data-title="Workplace & Community"></a>
-    </div>
-
+    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd"
+       target="_top" class="zone pos-left"
+       data-title="Workplace & Community"></a>
+</div>
 </body>
 </html>
