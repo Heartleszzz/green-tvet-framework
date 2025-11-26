@@ -1,144 +1,364 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green TVET Interactive – Modern UI</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hotspot Calibrator — Green TVET</title>
 <style>
-/* CORE RESET */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
+  :root{
+    --max-width: 1024px;
+    --radius: 60px; /* hotspot visual size in px (use percent for responsive if desired) */
+    --hot-size-pct: 12.5%; /* fallback size relative to container width */
+    --hot-bg: rgba(56,133,111,0.12);
+    --hot-border: rgba(56,133,111,0.22);
+    --tooltip-bg: rgba(22,22,22,0.85);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
     background:transparent;
-    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-    overflow:hidden;
-    display:flex;justify-content:center;
-}
+    display:flex;
+    justify-content:center;
+    padding:18px;
+  }
 
-/* FRAME WRAPPER */
-.container{
-    position:relative;
+  .frame{
     width:100%;
-    max-width:800px;
-}
+    max-width:var(--max-width);
+    position:relative;
+  }
 
-/* MAIN IMAGE w/ depth */
-.main-img{
-    width:100%;display:block;
+  /* responsive image */
+  .main-img{
+    width:100%;
+    height:auto;
     border-radius:12px;
-    box-shadow:0 6px 18px rgba(0,0,0,.08);
-}
+    display:block;
+    box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  }
 
-/* ==============================
-   🔘 HOTSPOT INTERACTIVE CIRCLES
-================================*/
-.zone{
+  /* Hotspot container sits on top of the image */
+  .hotspot-layer{
     position:absolute;
-    width:16.5%;height:24%;
-    cursor:pointer;
+    inset:0;
+    pointer-events:none; /* allow events only on hotspots */
+  }
+
+  /* Hotspot basics (centered) */
+  .hotspot{
+    position:absolute;
+    width:var(--hot-size-pct);
+    aspect-ratio:1/1;
+    max-width:120px;
+    min-width:40px;
+    transform:translate(-50%,-50%); /* important to center the circle exactly at top/left */
     border-radius:50%;
-    z-index:5;
-    backdrop-filter:blur(3px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:grab;
+    pointer-events:auto;
+    transition:transform .18s ease, box-shadow .18s ease;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
 
-    /* Invisible default, visible interaction */
-    background:rgba(255,255,255,.02);
-    border:1px solid rgba(255,255,255,.05);
+  /* DEBUG appearance while calibrating */
+  .hotspot.debug{
+    background: var(--hot-bg);
+    border: 2px dashed var(--hot-border);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  }
 
-    /* Subtle breathing glow – premium feel */
-    animation:breath 4s ease-in-out infinite;
-    transition:.25s ease;
-}
-@keyframes breath{
-    0%,100%{box-shadow:0 0 0 rgba(255,255,255,.08);}
-    50%{box-shadow:0 0 18px rgba(255,255,255,.15);}
-}
+  .hotspot:active{ cursor:grabbing; transform: translate(-50%,-50%) scale(1.03); }
 
-/* HOVER STATE */
-.zone:hover{
-    transform:scale(1.07);
-    background:rgba(255,255,255,.12);
-    box-shadow:0 0 16px rgba(255,255,255,.35);
-}
+  /* invisible production style (keeps the interactive area but not visible) */
+  .hotspot.production{
+    background: transparent;
+    border: none;
+    box-shadow:none;
+  }
 
-/* ==============================
-   🏷 Modern Tooltip Style
-================================*/
-.zone::after{
-    content:attr(data-title);
+  /* Label bubble used only in debug */
+  .hot-label{
     position:absolute;
-    bottom:115%;left:50%;
-    transform:translateX(-50%) translateY(8px);
-    opacity:0;pointer-events:none;
-
-    padding:8px 14px;
-    font-size:13px;font-weight:600;
+    top:calc(-100% - 10px);
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--tooltip-bg);
+    color:#fff;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:8px;
     white-space:nowrap;
+    box-shadow:0 10px 24px rgba(0,0,0,0.2);
+    border:1px solid rgba(255,255,255,0.06);
+    opacity:0.98;
+  }
 
-    /* Modern glass card */
-    background:rgba(22,22,22,.85);
-    backdrop-filter:blur(12px) saturate(1.4);
-    border-radius:10px;
-
-    border:1px solid rgba(255,255,255,.12);
-    box-shadow:0 8px 22px rgba(0,0,0,.25),
-               inset 0 0 8px rgba(255,255,255,.05);
-
-    transition:.28s cubic-bezier(.23,1,.32,1);
-}
-
-/* Tooltip Arrow */
-.zone::before{
+  /* small arrow */
+  .hot-label::after{
     content:"";
     position:absolute;
-    bottom:108%;left:50%;
-    transform:translateX(-50%) translateY(8px);
+    bottom:-6px; left:50%;
+    transform:translateX(-50%);
     border:6px solid transparent;
-    border-bottom-color:rgba(22,22,22,.85);
-    opacity:0;
-    transition:.28s cubic-bezier(.23,1,.32,1);
-}
+    border-top-color:var(--tooltip-bg);
+  }
 
-/* Tooltip Appears */
-.zone:hover::after,
-.zone:hover::before{
-    opacity:1;
-    transform:translateX(-50%) translateY(-5px);
-}
+  /* Control panel */
+  .controls{
+    margin:10px 0 14px 0;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .btn{
+    background:#2f855a;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:8px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .btn.secondary{
+    background:#f2f6f4;color:#1b3b2f;border:1px solid rgba(27,59,47,0.06)
+  }
+  .out{
+    margin-left:auto;
+    font-size:13px;
+    color:#333;
+  }
 
-/* ==============================
-   📍 Hotspot Coordinates
-================================*/
-.pos-top{top:20%;left:41.5%;}
-.pos-right{top:38%;left:60%;}
-.pos-bot-right{top:61%;left:53%;}
-.pos-bot-left{top:61%;left:30%;}
-.pos-left{top:38%;left:23%;}
+  /* small JSON output area */
+  pre#coordsOut{
+    margin-top:8px;
+    background:#0f1720;color:#e6eef0;padding:10px;border-radius:8px;overflow:auto;
+    max-height:160px;font-size:13px;
+  }
+
+  /* Example final (preview) look: tooltip on hover (production) */
+  .hotspot.production:hover::after{
+    content:attr(data-title);
+    position:absolute;
+    top:calc(-100% - 10px);
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--tooltip-bg);
+    color:#fff;
+    padding:8px 12px;
+    border-radius:8px;
+    white-space:nowrap;
+    box-shadow:0 10px 24px rgba(0,0,0,0.22);
+    border:1px solid rgba(255,255,255,0.06);
+    z-index:20;
+  }
+
+  /* Responsive tweak: keep size reasonable on very narrow screens */
+  @media (max-width:420px){
+    :root{ --hot-size-pct: 18%;}
+  }
 </style>
 </head>
-
 <body>
-<div class="container">
-    <img src="framework.png" class="main-img" alt="Green TVET Framework">
 
-    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd"
-       target="_top" class="zone pos-top"
-       data-title="Training Regulations & Curriculum"></a>
+<div style="width:100%;max-width:1100px;">
+  <div class="controls">
+    <button id="toggleDrag" class="btn">Drag mode: ON</button>
+    <button id="toggleDebug" class="btn secondary">Debug: ON</button>
+    <button id="togglePreview" class="btn secondary">Preview: OFF</button>
 
-    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd"
-       target="_top" class="zone pos-right"
-       data-title="Green Research"></a>
+    <div class="out">Tip: drag hotspots to align — then click <strong>Save positions</strong></div>
+    <button id="saveBtn" class="btn" style="margin-left:12px">Save positions</button>
+  </div>
 
-    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd"
-       target="_top" class="zone pos-bot-right"
-       data-title="Green Campus"></a>
+  <div class="frame" id="frame">
+    <!-- Replace src with your actual image path -->
+    <img class="main-img" id="mainImg" src="framework.png" alt="Green TVET Framework">
 
-    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd"
-       target="_top" class="zone pos-bot-left"
-       data-title="Green Institutional Culture"></a>
+    <div class="hotspot-layer" id="layer">
+      <!-- initial positions are approximate; they'll be updated when you drag & save -->
+      <a class="hotspot debug" id="hot-1" href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd" 
+         data-title="Training Regulations & Curriculum" style="top:20%;left:41.5%"></a>
 
-    <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd"
-       target="_top" class="zone pos-left"
-       data-title="Workplace & Community"></a>
+      <a class="hotspot debug" id="hot-2" href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd" 
+         data-title="Green Research" style="top:38%;left:60%"></a>
+
+      <a class="hotspot debug" id="hot-3" href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd" 
+         data-title="Green Campus" style="top:61%;left:53%"></a>
+
+      <a class="hotspot debug" id="hot-4" href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd" 
+         data-title="Green Institutional Culture" style="top:61%;left:30%"></a>
+
+      <a class="hotspot debug" id="hot-5" href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd" 
+         data-title="Workplace & Community" style="top:38%;left:23%"></a>
+    </div>
+  </div>
+
+  <pre id="coordsOut" aria-live="polite" spellcheck="false">// Saved coordinates will appear here when you click Save positions</pre>
 </div>
+
+<script>
+  // Helper functions
+  const frame = document.getElementById('frame');
+  const layer = document.getElementById('layer');
+  let dragging = true;
+  let debugOn = true;
+  let previewOn = false;
+
+  const toggleDragBtn = document.getElementById('toggleDrag');
+  const toggleDebugBtn = document.getElementById('toggleDebug');
+  const togglePreviewBtn = document.getElementById('togglePreview');
+  const saveBtn = document.getElementById('saveBtn');
+  const coordsOut = document.getElementById('coordsOut');
+
+  // set initial UI text states
+  toggleDragBtn.textContent = 'Drag mode: ON';
+  toggleDebugBtn.textContent = 'Debug: ON';
+  togglePreviewBtn.textContent = 'Preview: OFF';
+
+  function setDebug(state){
+    debugOn = state;
+    document.querySelectorAll('.hotspot').forEach(h=>{
+      if(debugOn) h.classList.add('debug');
+      else h.classList.remove('debug');
+    });
+    toggleDebugBtn.textContent = `Debug: ${debugOn? 'ON':'OFF'}`;
+  }
+  function setDrag(state){
+    dragging = state;
+    toggleDragBtn.textContent = `Drag mode: ${dragging? 'ON':'OFF'}`;
+    document.querySelectorAll('.hotspot').forEach(h=>{
+      h.style.touchAction = dragging ? 'none' : 'auto';
+    });
+  }
+  function setPreview(state){
+    previewOn = state;
+    if(previewOn){
+      document.querySelectorAll('.hotspot').forEach(h=>{
+        h.classList.add('production');
+        h.classList.remove('debug');
+      });
+    }else{
+      document.querySelectorAll('.hotspot').forEach(h=>{
+        h.classList.remove('production');
+        if(debugOn) h.classList.add('debug');
+      });
+    }
+    togglePreviewBtn.textContent = `Preview: ${previewOn? 'ON':'OFF'}`;
+  }
+
+  toggleDebugBtn.addEventListener('click', ()=> setDebug(!debugOn));
+  toggleDragBtn.addEventListener('click', ()=> setDrag(!dragging));
+  togglePreviewBtn.addEventListener('click', ()=> setPreview(!previewOn));
+
+  // Make hotspots draggable (mouse + touch)
+  const hotspots = Array.from(document.querySelectorAll('.hotspot'));
+  hotspots.forEach(h => {
+    h.dataset.dragging = 'false';
+    h.addEventListener('pointerdown', startDrag);
+    // ensure anchor click still works when not dragging
+    h.addEventListener('click', (ev)=>{
+      if(h.dataset.dragging === 'true'){ ev.preventDefault(); ev.stopImmediatePropagation(); }
+      // else allow normal navigation
+    });
+  });
+
+  let active = null;
+  function startDrag(e){
+    if(!dragging) return;
+    active = e.currentTarget;
+    active.setPointerCapture(e.pointerId);
+    active.dataset.dragging = 'false';
+    active.dataset.startX = e.clientX;
+    active.dataset.startY = e.clientY;
+    active.dataset.origLeft = parseFloat(active.style.left) || 0;
+    active.dataset.origTop = parseFloat(active.style.top) || 0;
+    active.addEventListener('pointermove', onDrag);
+    active.addEventListener('pointerup', endDrag);
+  }
+
+  function onDrag(e){
+    if(!active) return;
+    // compute pointer pos relative to frame bounding box (percent)
+    const rect = frame.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    // clamp inside frame
+    const cx = Math.max(0, Math.min(rect.width, x));
+    const cy = Math.max(0, Math.min(rect.height, y));
+    const leftPct = (cx / rect.width) * 100;
+    const topPct = (cy / rect.height) * 100;
+    active.style.left = leftPct.toFixed(2) + '%';
+    active.style.top = topPct.toFixed(2) + '%';
+    active.dataset.dragging = 'true';
+  }
+
+  function endDrag(e){
+    if(!active) return;
+    active.removeEventListener('pointermove', onDrag);
+    active.removeEventListener('pointerup', endDrag);
+    try{ active.releasePointerCapture(e.pointerId); }catch(_){}
+    // small delay to reset dragging flag
+    setTimeout(()=> active.dataset.dragging = 'false', 40);
+    active = null;
+  }
+
+  // Save positions: return top/left % for each hotspot
+  saveBtn.addEventListener('click', ()=>{
+    const result = {};
+    hotspots.forEach(h=>{
+      const id = h.id || h.dataset.id || ('hot-' + Math.random().toString(36).slice(2,6));
+      const top = h.style.top || window.getComputedStyle(h).top;
+      const left = h.style.left || window.getComputedStyle(h).left;
+      result[id] = {
+        title: h.dataset.title || '',
+        top: top,
+        left: left,
+        href: h.getAttribute('href') || ''
+      };
+    });
+    const pretty = JSON.stringify(result, null, 2);
+    coordsOut.textContent = pretty;
+    console.log('Saved hotspot positions:', result);
+    // Also copy to clipboard for convenience (may prompt)
+    try{
+      navigator.clipboard.writeText(pretty).then(()=> {
+        coordsOut.textContent = pretty + "\n\n// Copied to clipboard.";
+      });
+    }catch(err){
+      // ignore clipboard errors
+    }
+  });
+
+  // Initialize: ensure hotspots are centered using transform; make pointer events default for anchors
+  document.querySelectorAll('.hotspot').forEach(h=>{
+    h.style.position = 'absolute';
+    // if top/left are not set, compute from class positions (already set in style attr earlier)
+    if(!h.style.left) h.style.left = getComputedStyle(h).left;
+    if(!h.style.top) h.style.top = getComputedStyle(h).top;
+    // ensure anchor navigates normally when not dragging
+    h.addEventListener('pointerup', (ev)=>{
+      // if not dragging, allow click navigation
+      if(h.dataset.dragging !== 'true'){
+        // open in same tab to behave like your previous anchors
+        // no change needed; the default <a> action will run
+      }
+    });
+  });
+
+  // Optional: when resizing window, keep debug on so you can re-adjust
+  window.addEventListener('resize', ()=>{
+    // noop - hotspots use percentages so they remain correct on resize
+  });
+
+  // initial states applied
+  setDebug(true);
+  setDrag(true);
+  setPreview(false);
+
+</script>
 </body>
 </html>
