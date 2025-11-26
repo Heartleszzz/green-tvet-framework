@@ -7,7 +7,6 @@
     <style>
     body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; font-family: sans-serif; }
     
-    /* The Container - Keeps everything aligned */
     .container {
         position: relative;
         width: 100%;
@@ -15,41 +14,38 @@
         margin: 0 auto;
     }
 
-    /* The Framework Image */
     .main-img {
         width: 100%;
         height: auto;
         display: block;
-        /* Optional: adds a soft shadow to the whole framework for pop */
+        /* Adds a nice shadow to make it pop */
         filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.2));
     }
 
-    /* --- THE INTERACTIVE ZONES --- */
+    /* --- ZONES --- */
     .zone {
         position: absolute;
-        width: 20%;  /* Slightly larger relative width */
-        height: 20%; /* Slightly larger relative height */
+        width: 20%;  
+        height: 20%; 
         border-radius: 50%; 
         cursor: pointer;
         z-index: 10;
         transition: all 0.2s ease-in-out;
     }
 
-    /* HOVER EFFECT: The White Glow */
     .zone:hover {
-        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8); /* Stronger glow */
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8); 
         background: rgba(255, 255, 255, 0.1); 
         transform: scale(1.05); 
     }
 
-    /* TOOLTIP: The Popup Text */
     .zone::after {
         content: attr(data-title); 
         position: absolute;
-        bottom: 110%; /* Moved up slightly */
+        bottom: 110%; 
         left: 50%;
         transform: translateX(-50%);
-        background-color: rgba(50, 50, 50, 0.95); /* Slightly transparent black */
+        background-color: rgba(50, 50, 50, 0.95);
         color: white;
         padding: 8px 12px;
         border-radius: 6px;
@@ -61,28 +57,21 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* Show Tooltip on Hover */
     .zone:hover::after {
         opacity: 1;
     }
 
-    /* --- NEW POSITIONS (Calibrated for Cropped Image) --- */
-    
-    /* 1. Top Center: Training */
+    /* --- COORDINATES FOR NEW CROP --- */
+    /* 1. Top Center */
     .pos-top { top: 5%; left: 40%; }
-
-    /* 2. Right Middle: Research */
+    /* 2. Right Middle */
     .pos-right { top: 31%; left: 70%; }
-
-    /* 3. Bottom Right: Campus */
+    /* 3. Bottom Right */
     .pos-bot-right { top: 70%; left: 58.5%; }
-
-    /* 4. Bottom Left: Culture */
+    /* 4. Bottom Left */
     .pos-bot-left { top: 70%; left: 21.5%; }
-
-    /* 5. Left Middle: Workplace */
+    /* 5. Left Middle */
     .pos-left { top: 31%; left: 10%; }
-
 </style>
 </head>
 <body>
