@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green TVET Interactive</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; font-family: sans-serif; }
+        
+        /* The Container - Keeps everything aligned */
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; 
+            margin: 0 auto;
+        }
+
+        /* The Framework Image */
+        .main-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- THE INTERACTIVE ZONES --- */
+        .zone {
+            position: absolute;
+            width: 17%;  
+            height: 20%; 
+            border-radius: 50%; 
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* HOVER EFFECT: The White Glow */
+        .zone:hover {
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8); 
+            background: rgba(255, 255, 255, 0.1); 
+            transform: scale(1.05); 
+        }
+
+        /* TOOLTIP: The Popup Text */
+        .zone::after {
+            content: attr(data-title); 
+            position: absolute;
+            bottom: 105%; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* Show Tooltip on Hover */
+        .zone:hover::after {
+            opacity: 1;
+        }
+
+        /* --- POSITIONS (Calibrated for Green TVET Pentagon) --- */
+        
+        /* 1. Top Center */
+        .pos-top { top: 18%; left: 41.5%; }
+
+        /* 2. Right Middle */
+        .pos-right { top: 37%; left: 56%; }
+
+        /* 3. Bottom Right */
+        .pos-bot-right { top: 61%; left: 50%; }
+
+        /* 4. Bottom Left */
+        .pos-bot-left { top: 61%; left: 33%; }
+
+        /* 5. Left Middle */
+        .pos-left { top: 37%; left: 26.5%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="framework.png" alt="Green TVET Framework" class="main-img">
+
+        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd" 
+           target="_top" 
+           class="zone pos-top" 
+           data-title="Green Training Regulation"></a>
+
+        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd" 
+           target="_top" 
+           class="zone pos-right" 
+           data-title="Green Research"></a>
+
+        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd" 
+           target="_top" 
+           class="zone pos-bot-right" 
+           data-title="Green Campus"></a>
+
+        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd" 
+           target="_top" 
+           class="zone pos-bot-left" 
+           data-title="Green Institutional Culture"></a>
+
+        <a href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd" 
+           target="_top" 
+           class="zone pos-left" 
+           data-title="Green Workplace and Community"></a>
+    </div>
+
+</body>
+</html>
