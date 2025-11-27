@@ -28,6 +28,10 @@
     border-radius: 50%;
     pointer-events: none;
     
+    /* --- DEBUG: RED BORDER --- */
+    /* Delete this line once you confirm they are centered! */
+    border: 2px solid red; 
+    
     /* Animation */
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
@@ -45,21 +49,21 @@
     }
   }
 
-  /* --- ADJUSTED POSITIONS (Moved UP and OUT) --- */
+  /* --- FINAL ADJUSTED POSITIONS --- */
   
-  /* 1. Top Center: Unchanged (Perfect) */
+  /* 1. Top Center: PERFECT (Unchanged) */
   .pos-1 { top: 17%; left: 41.5%; }
 
-  /* 2. Right (Research): Moved UP and RIGHT */
-  .pos-2 { top: 36%; left: 68%; }
+  /* 2. Right (Research): Nudged Left slightly for symmetry */
+  .pos-2 { top: 36%; left: 67.5%; }
 
-  /* 3. Bot Right (Campus): Moved UP and RIGHT */
-  .pos-3 { top: 65%; left: 59%; }
+  /* 3. Bot Right (Campus): Moved DOWN and LEFT (Inward) */
+  .pos-3 { top: 68%; left: 56%; }
 
-  /* 4. Bot Left (Culture): Moved UP and LEFT */
-  .pos-4 { top: 65%; left: 24%; }
+  /* 4. Bot Left (Culture): Moved DOWN and RIGHT (Inward) */
+  .pos-4 { top: 68%; left: 27%; }
 
-  /* 5. Left (Workplace): Moved UP and LEFT */
+  /* 5. Left (Workplace): PERFECT (Unchanged) */
   .pos-5 { top: 36%; left: 15%; }
 
 </style>
