@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green TVET Journals</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: transparent;
+    display: flex; justify-content: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .container {
+    position: relative;
+    width: 100%; max-width: 950px;
+    height: 500px; /* Defined height to hold the floating books */
+  }
+
+  /* --- THE FLOATING BOOK --- */
+  .book-card {
+    position: absolute;
+    width: 18%; /* Size of the book relative to container */
+    height: auto;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1; /* Default layer */
+  }
+
+  .book-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+    /* Deep shadow to make them look 3D */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: all 0.4s;
+  }
+
+  /* --- HOVER EFFECT --- */
+  .book-card:hover {
+    z-index: 100; /* Bring to very front */
+    transform: translateY(-15px) scale(1.1); /* Lift up and grow */
+  }
+  
+  .book-card:hover img {
+    box-shadow: 0 25px 40px rgba(0,0,0,0.5); /* Shadow gets bigger/further away */
+    border: 2px solid rgba(255,255,255,0.8); /* White highlight border */
+  }
+
+  /* --- GLASS TOOLTIP --- */
+  .book-card::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -40px; 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .book-card:hover::after {
+    opacity: 1;
+    bottom: -50px; /* Slides down slightly */
+  }
+
+  /* --- POSITIONS (Scattered Look) --- */
+  
+  /* Vol 1 (Far Left) */
+  .pos-1 { top: 10%; left: 2%; transform: rotate(-3deg); }
+  
+  /* Vol 2 (Mid Left - Lower) */
+  .pos-2 { top: 35%; left: 22%; transform: rotate(2deg); z-index: 2; }
+  
+  /* Vol 3 (Center - Higher) */
+  .pos-3 { top: 5%; left: 42%; transform: rotate(-1deg); z-index: 3; }
+  
+  /* Vol 4 (Mid Right - Lower) */
+  .pos-4 { top: 35%; left: 62%; transform: rotate(3deg); z-index: 2; }
+  
+  /* Vol 5 (Far Right) */
+  .pos-5 { top: 10%; left: 82%; transform: rotate(-2deg); }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <a class="book-card pos-1" 
+     href="YOUR_PDF_LINK_HERE" target="_blank"
+     data-title="Vol I: Maiden Issue">
+     <img src="vol-1.png" alt="Vol 1">
+  </a>
+
+  <a class="book-card pos-2" 
+     href="YOUR_PDF_LINK_HERE" target="_blank"
+     data-title="Vol II: Green TVET">
+     <img src="vol-2.png" alt="Vol 2">
+  </a>
+
+  <a class="book-card pos-3" 
+     href="YOUR_PDF_LINK_HERE" target="_blank"
+     data-title="Vol III: Sustainability">
+     <img src="vol-3.png" alt="Vol 3">
+  </a>
+
+  <a class="book-card pos-4" 
+     href="YOUR_PDF_LINK_HERE" target="_blank"
+     data-title="Vol IV: 2023 Issue">
+     <img src="vol-4.png" alt="Vol 4">
+  </a>
+
+  <a class="book-card pos-5" 
+     href="YOUR_PDF_LINK_HERE" target="_blank"
+     data-title="Vol V: 2024 Issue">
+     <img src="vol-5.png" alt="Vol 5">
+  </a>
+
+</div>
+</body>
+</html>
