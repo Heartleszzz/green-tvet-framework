@@ -20,7 +20,7 @@
     filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
   }
 
-/* --- BREATHE ZONES --- */
+  /* --- PULSE ZONES --- */
   .pulse-zone {
     position: absolute;
     width: 17%; 
@@ -28,33 +28,44 @@
     border-radius: 50%;
     pointer-events: none;
     
-    /* A visible white border so users see the target area clearly */
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.05); /* Faint highlight inside */
+    /* --- DEBUG: RED BORDER --- */
+    /* DELETE THIS LINE BELOW ONCE IT IS PERFECT! */
+    border: 2px solid red; 
     
-    /* The Breathing Animation */
-    animation: breathe 1.5s infinite alternate ease-in-out;
+    /* Animation */
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    animation: sonar-ripple 2s infinite ease-out;
   }
 
-  @keyframes breathe {
+  @keyframes sonar-ripple {
     0% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8),
+                  0 0 0 0 rgba(255, 255, 255, 0.8);
     }
     100% {
-      /* Grow 10% larger and glow brightly */
-      transform: scale(1.1);
-      box-shadow: 0 0 25px 5px rgba(255, 255, 255, 0.8);
-      border-color: #fff;
+      box-shadow: 0 0 0 35px rgba(255, 255, 255, 0),
+                  0 0 0 60px rgba(255, 255, 255, 0);
     }
   }
 
-  /* --- POSITIONS --- */
-  .pos-1 { top: 16%; left: 41.5%; }
-  .pos-2 { top: 34%; left: 66%; }
-  .pos-3 { top: 63%; left: 56%; }
-  .pos-4 { top: 63%; left: 27%; }
-  .pos-5 { top: 34%; left: 17%; }
+  /* --- ADJUSTED POSITIONS (Moved Down & Inwards) --- */
+  
+  /* 1. Top Center: Moved DOWN */
+  .pos-1 { top: 20%; left: 41.5%; }
+
+  /* 2. Right: Moved DOWN and LEFT (Inward) */
+  .pos-2 { top: 38%; left: 63%; }
+
+  /* 3. Bot Right: Moved DOWN and LEFT (Inward) */
+  .pos-3 { top: 66%; left: 54%; }
+
+  /* 4. Bot Left: Moved DOWN and RIGHT (Inward) */
+  .pos-4 { top: 66%; left: 29%; }
+
+  /* 5. Left: Moved DOWN and RIGHT (Inward) */
+  .pos-5 { top: 38%; left: 20%; }
+
 </style>
 </head>
 <body>
