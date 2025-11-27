@@ -13,13 +13,13 @@
     font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
-    overflow: hidden; /* Prevents scrollbars in the embed */
+    overflow: hidden; 
   }
 
   .container {
     position: relative;
     width: 100%;
-    max-width: 850px; /* Limits size to keep it sharp */
+    max-width: 850px; 
   }
 
   /* Responsive Image */
@@ -27,28 +27,30 @@
     width: 100%;
     height: auto;
     display: block;
-    /* Optional: Soft shadow to make the framework float */
     filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
   }
 
   /* --- 2. THE HOTSPOTS (Clickable Zones) --- */
   .hotspot {
     position: absolute;
-    width: 17%; /* Perfect size for your circles */
-    height: 22%; /* Slightly taller to cover text */
+    
+    /* THE FIX FOR THE OBLONG SHAPE: */
+    width: 17%; 
+    aspect-ratio: 1 / 1; /* This forces a perfect circle! */
+    height: auto;        /* Let browser calculate height automatically */
+    
     border-radius: 50%;
     cursor: pointer;
     z-index: 10;
     
-    /* Modern Transition */
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     
-    /* DEBUG MODE: Change 'transparent' to 'rgba(255,0,0,0.3)' if you need to see the boxes again */
+    /* Debug is OFF (transparent) */
     background: transparent; 
     border: none;
   }
 
-  /* IDLE ANIMATION: Subtle Pulse (Tells user "Click me") */
+  /* IDLE ANIMATION */
   .hotspot {
     animation: pulse 3s infinite;
   }
@@ -58,24 +60,23 @@
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
   }
 
-  /* HOVER EFFECT: Scale & Glassy Glow */
+  /* HOVER EFFECT */
   .hotspot:hover {
     transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.15); /* White tint */
+    background: rgba(255, 255, 255, 0.15); 
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.2);
     border: 1px solid rgba(255,255,255,0.6);
-    animation: none; /* Stop pulsing on hover */
+    animation: none; 
   }
 
-  /* --- 3. MODERN TOOLTIP (The Popup) --- */
+  /* --- 3. MODERN TOOLTIP --- */
   .hotspot::after {
     content: attr(data-title);
     position: absolute;
-    bottom: 110%;
+    bottom: 115%; /* Moved up slightly to clear the perfect circle */
     left: 50%;
     transform: translateX(-50%) translateY(10px);
     
-    /* GLASSMORPHISM LOOK */
     background: rgba(20, 20, 20, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -97,7 +98,7 @@
   .hotspot::before {
     content: '';
     position: absolute;
-    bottom: 100%;
+    bottom: 100%; /* Align with bottom of tooltip */
     left: 50%;
     transform: translateX(-50%) translateY(10px);
     border-width: 6px;
@@ -114,22 +115,23 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* --- 4. PRECISE COORDINATES (Fixed based on your screenshot) --- */
-  
+  /* --- 4. PRECISE COORDINATES --- */
+  /* Note: Because we changed how height is calculated, I tweaked the 'top' % slightly */
+
   /* Top Center: Training */
-  .pos-1 { top: 17%; left: 41.5%; }
+  .pos-1 { top: 16%; left: 41.5%; }
 
   /* Right Middle: Research */
-  .pos-2 { top: 35%; left: 66%; }
+  .pos-2 { top: 34%; left: 66%; }
 
   /* Bottom Right: Campus */
-  .pos-3 { top: 64%; left: 56%; }
+  .pos-3 { top: 63%; left: 56%; }
 
   /* Bottom Left: Culture */
-  .pos-4 { top: 64%; left: 27%; }
+  .pos-4 { top: 63%; left: 27%; }
 
   /* Left Middle: Workplace */
-  .pos-5 { top: 35%; left: 17%; }
+  .pos-5 { top: 34%; left: 17%; }
 
 </style>
 </head>
