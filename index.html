@@ -20,21 +20,34 @@
     filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
   }
 
-  /* --- VISUAL PULSE ZONES (No Mouse Interaction) --- */
+  /* --- AGGRESSIVE PULSE ZONES --- */
   .pulse-zone {
     position: absolute;
     width: 17%; 
     aspect-ratio: 1 / 1;
     border-radius: 50%;
-    /* The Pulse Animation */
-    animation: pulse 3s infinite;
-    pointer-events: none; /* This ensures the code ignores your mouse completely */
+    pointer-events: none; /* Mouse ignores this */
+    
+    /* 1. Base Glow (Always visible) */
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    
+    /* 2. The Animation */
+    animation: sonar-ripple 2s infinite ease-out;
   }
 
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  /* Make the circles slightly larger so the ripple starts wider */
+  @keyframes sonar-ripple {
+    0% {
+      /* Start: Small and Solid White */
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8),
+                  0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+    100% {
+      /* End: Huge and Transparent */
+      box-shadow: 0 0 0 35px rgba(255, 255, 255, 0),
+                  0 0 0 60px rgba(255, 255, 255, 0);
+    }
   }
 
   /* --- POSITIONS --- */
