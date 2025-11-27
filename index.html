@@ -3,168 +3,56 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Green TVET Interactive</title>
+<title>Green TVET Visuals</title>
 <style>
-  /* --- 1. MODERN SETUP --- */
   body {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     background: transparent;
-    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    overflow: hidden; 
+    display: flex; justify-content: center;
+    overflow: hidden;
   }
-
   .container {
     position: relative;
-    width: 100%;
-    max-width: 850px; 
+    width: 100%; max-width: 850px;
   }
-
-  /* Responsive Image */
   .main-img {
-    width: 100%;
-    height: auto;
-    display: block;
+    width: 100%; height: auto; display: block;
     filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
   }
 
-  /* --- 2. THE HOTSPOTS (Clickable Zones) --- */
-  .hotspot {
+  /* --- VISUAL PULSE ZONES (No Mouse Interaction) --- */
+  .pulse-zone {
     position: absolute;
-    
-    /* THE FIX FOR THE OBLONG SHAPE: */
     width: 17%; 
-    aspect-ratio: 1 / 1; /* This forces a perfect circle! */
-    height: auto;        /* Let browser calculate height automatically */
-    
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-    
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    
-    /* Debug is OFF (transparent) */
-    background: transparent; 
-    border: none;
+    /* The Pulse Animation */
+    animation: pulse 3s infinite;
+    pointer-events: none; /* This ensures the code ignores your mouse completely */
   }
 
-  /* IDLE ANIMATION */
-  .hotspot {
-    animation: pulse 3s infinite;
-  }
   @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
     100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
   }
 
-  /* HOVER EFFECT */
-  .hotspot:hover {
-    transform: scale(1.1);
-    background: rgba(255, 255, 255, 0.15); 
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.6);
-    animation: none; 
-  }
-
-  /* --- 3. MODERN TOOLTIP --- */
-  .hotspot::after {
-    content: attr(data-title);
-    position: absolute;
-    bottom: 115%; /* Moved up slightly to clear the perfect circle */
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    
-    background: rgba(20, 20, 20, 0.9);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  /* Tooltip Arrow */
-  .hotspot::before {
-    content: '';
-    position: absolute;
-    bottom: 100%; /* Align with bottom of tooltip */
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    border-width: 6px;
-    border-style: solid;
-    border-color: rgba(20, 20, 20, 0.9) transparent transparent transparent;
-    opacity: 0;
-    transition: all 0.3s;
-  }
-
-  /* Show Tooltip on Hover */
-  .hotspot:hover::after, 
-  .hotspot:hover::before {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* --- 4. PRECISE COORDINATES --- */
-  /* Note: Because we changed how height is calculated, I tweaked the 'top' % slightly */
-
-  /* Top Center: Training */
+  /* --- POSITIONS --- */
   .pos-1 { top: 16%; left: 41.5%; }
-
-  /* Right Middle: Research */
   .pos-2 { top: 34%; left: 66%; }
-
-  /* Bottom Right: Campus */
   .pos-3 { top: 63%; left: 56%; }
-
-  /* Bottom Left: Culture */
   .pos-4 { top: 63%; left: 27%; }
-
-  /* Left Middle: Workplace */
   .pos-5 { top: 34%; left: 17%; }
-
 </style>
 </head>
 <body>
-
 <div class="container">
-  <img class="main-img" src="framework.png" alt="Green TVET Framework">
-
-  <a class="hotspot pos-1" 
-     href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_oa3gqps3xd" 
-     target="_top"
-     data-title="Green Training Regulations & Curriculum"></a>
-
-  <a class="hotspot pos-2" 
-     href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_eid5jqt3xd" 
-     target="_top"
-     data-title="Green Research"></a>
-
-  <a class="hotspot pos-3" 
-     href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_0u2zlqt3xd" 
-     target="_top"
-     data-title="Green Campus"></a>
-
-  <a class="hotspot pos-4" 
-     href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_6wfwoqt3xd" 
-     target="_top"
-     data-title="Green Institutional Culture"></a>
-
-  <a class="hotspot pos-5" 
-     href="https://lookerstudio.google.com/reporting/4a4a1d37-cb7c-41e2-8211-51163285bef8/page/p_ct4xqqt3xd" 
-     target="_top"
-     data-title=" Green Workplace & Community"></a>
+  <img class="main-img" src="framework.png" alt="Framework">
+  <div class="pulse-zone pos-1"></div>
+  <div class="pulse-zone pos-2"></div>
+  <div class="pulse-zone pos-3"></div>
+  <div class="pulse-zone pos-4"></div>
+  <div class="pulse-zone pos-5"></div>
 </div>
-
 </body>
 </html>
