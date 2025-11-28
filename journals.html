@@ -7,7 +7,6 @@
 <style>
   body {
     margin: 0; padding: 0;
-    /* Background matches your dashboard */
     background-color: #f5f5f5; 
     display: flex; justify-content: center;
     overflow: hidden;
@@ -19,44 +18,53 @@
     height: 500px; 
   }
 
+  /* --- UPGRADE 3: The Floor Shadow --- */
+  /* This creates a soft oval shadow on the "floor" behind the books */
+  .container::before {
+    content: '';
+    position: absolute;
+    bottom: 10%; left: 10%; width: 80%; height: 20px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
   /* --- THE FLOATING BOOK --- */
   .book-card {
     position: absolute;
-    width: 17%; /* Slightly smaller to allow for nicer spacing */
+    width: 19%; /* UPGRADE 2: Bigger Books (was 17%) */
     height: auto;
     cursor: pointer;
-    /* Smooth movement for position AND rotation */
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Elastic bounce effect for smoother movement */
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1; 
+    transform-origin: center bottom; /* Rotates from the bottom spine */
   }
 
   .book-card img {
     width: 100%;
     height: auto;
     display: block;
-    /* Drop shadow handles transparent PNGs correctly */
-    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
     transition: all 0.4s;
   }
 
-  /* --- HOVER EFFECT: Lift, Straighten & Glow --- */
+  /* --- HOVER EFFECT --- */
   .book-card:hover {
-    z-index: 100; /* Bring to front */
-    
-    /* THE MAGIC: Lift up AND remove the rotation (0deg) so it's easy to read */
-    transform: translateY(-20px) scale(1.15) rotate(0deg) !important; 
+    z-index: 100; 
+    /* Lifts higher and straightens out */
+    transform: translateY(-40px) scale(1.15) rotate(0deg) !important; 
   }
   
   .book-card:hover img {
-    /* Deeper shadow on hover */
-    filter: drop-shadow(0 30px 25px rgba(0,0,0,0.35)) brightness(1.05);
+    filter: drop-shadow(0 35px 25px rgba(0,0,0,0.3)) brightness(1.08);
   }
 
   /* --- GLASS TOOLTIP --- */
   .book-card::after {
     content: attr(data-title);
     position: absolute;
-    bottom: -40px; 
+    bottom: -30px; 
     left: 50%;
     transform: translateX(-50%);
     background: rgba(20, 20, 20, 0.9);
@@ -69,49 +77,49 @@
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s 0.1s; /* Slight delay so it doesn't flicker */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   }
 
   .book-card:hover::after {
     opacity: 1;
-    bottom: -60px; /* Slides down further to clear the larger book */
+    bottom: -50px; 
   }
 
-  /* --- AESTHETIC POSITIONS (The Fan Layout) --- */
+  /* --- UPGRADE 1: DEEPER CURVE POSITIONS --- */
   
-  /* Vol 1: Low & Tilted Hard Left */
+  /* Vol 1: Lower & More Tilted */
   .pos-1 { 
-    top: 22%; left: 3%; 
-    transform: rotate(-15deg); 
+    top: 25%; left: 2%; 
+    transform: rotate(-20deg); 
     z-index: 1; 
   }
 
-  /* Vol 2: Higher & Tilted Slightly Left */
+  /* Vol 2: Mid-Height */
   .pos-2 { 
-    top: 10%; left: 22%; 
-    transform: rotate(-7deg); 
+    top: 12%; left: 21%; 
+    transform: rotate(-8deg); 
     z-index: 2; 
   }
 
-  /* Vol 3: Center & Straight (The Anchor) */
+  /* Vol 3: Center & Highest */
   .pos-3 { 
-    top: 5%; left: 41.5%; 
+    top: 5%; left: 40.5%; 
     transform: rotate(0deg); 
     z-index: 3; 
   }
 
-  /* Vol 4: Higher & Tilted Slightly Right */
+  /* Vol 4: Mid-Height */
   .pos-4 { 
-    top: 10%; left: 61%; 
-    transform: rotate(7deg); 
+    top: 12%; left: 60%; 
+    transform: rotate(8deg); 
     z-index: 2; 
   }
 
-  /* Vol 5: Low & Tilted Hard Right */
+  /* Vol 5: Lower & More Tilted */
   .pos-5 { 
-    top: 22%; left: 80%; 
-    transform: rotate(15deg); 
+    top: 25%; left: 79%; 
+    transform: rotate(20deg); 
     z-index: 1; 
   }
 
