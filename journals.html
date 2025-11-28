@@ -22,9 +22,10 @@
   /* --- THE FLOATING BOOK --- */
   .book-card {
     position: absolute;
-    width: 18%; 
+    width: 17%; /* Slightly smaller to allow for nicer spacing */
     height: auto;
     cursor: pointer;
+    /* Smooth movement for position AND rotation */
     transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 1; 
   }
@@ -33,26 +34,25 @@
     width: 100%;
     height: auto;
     display: block;
-    
-    /* THE FIX: Use filter instead of box-shadow */
-    /* This makes the shadow ignore transparent areas! */
-    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
-    
+    /* Drop shadow handles transparent PNGs correctly */
+    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
     transition: all 0.4s;
   }
 
-  /* --- HOVER EFFECT --- */
+  /* --- HOVER EFFECT: Lift, Straighten & Glow --- */
   .book-card:hover {
-    z-index: 100; 
-    transform: translateY(-15px) scale(1.1); 
+    z-index: 100; /* Bring to front */
+    
+    /* THE MAGIC: Lift up AND remove the rotation (0deg) so it's easy to read */
+    transform: translateY(-20px) scale(1.15) rotate(0deg) !important; 
   }
   
   .book-card:hover img {
-    /* Make the shadow deeper/further away */
-    filter: drop-shadow(0 25px 20px rgba(0,0,0,0.4)) brightness(1.1);
+    /* Deeper shadow on hover */
+    filter: drop-shadow(0 30px 25px rgba(0,0,0,0.35)) brightness(1.05);
   }
 
-  /* --- GLASS TOOLTIP (No Changes Here) --- */
+  /* --- GLASS TOOLTIP --- */
   .book-card::after {
     content: attr(data-title);
     position: absolute;
@@ -75,15 +75,45 @@
 
   .book-card:hover::after {
     opacity: 1;
-    bottom: -50px; 
+    bottom: -60px; /* Slides down further to clear the larger book */
   }
 
-  /* --- POSITIONS --- */
-  .pos-1 { top: 10%; left: 2%; transform: rotate(-3deg); }
-  .pos-2 { top: 35%; left: 22%; transform: rotate(2deg); z-index: 2; }
-  .pos-3 { top: 5%; left: 42%; transform: rotate(-1deg); z-index: 3; }
-  .pos-4 { top: 35%; left: 62%; transform: rotate(3deg); z-index: 2; }
-  .pos-5 { top: 10%; left: 82%; transform: rotate(-2deg); }
+  /* --- AESTHETIC POSITIONS (The Fan Layout) --- */
+  
+  /* Vol 1: Low & Tilted Hard Left */
+  .pos-1 { 
+    top: 22%; left: 3%; 
+    transform: rotate(-15deg); 
+    z-index: 1; 
+  }
+
+  /* Vol 2: Higher & Tilted Slightly Left */
+  .pos-2 { 
+    top: 10%; left: 22%; 
+    transform: rotate(-7deg); 
+    z-index: 2; 
+  }
+
+  /* Vol 3: Center & Straight (The Anchor) */
+  .pos-3 { 
+    top: 5%; left: 41.5%; 
+    transform: rotate(0deg); 
+    z-index: 3; 
+  }
+
+  /* Vol 4: Higher & Tilted Slightly Right */
+  .pos-4 { 
+    top: 10%; left: 61%; 
+    transform: rotate(7deg); 
+    z-index: 2; 
+  }
+
+  /* Vol 5: Low & Tilted Hard Right */
+  .pos-5 { 
+    top: 22%; left: 80%; 
+    transform: rotate(15deg); 
+    z-index: 1; 
+  }
 
 </style>
 </head>
@@ -91,32 +121,32 @@
 <div class="container">
 
   <a class="book-card pos-1" 
-     href="YOUR_LINK_HERE" target="_blank"
-     data-title="Green TVET Vol I: 2020 Maiden Issue">
+     href="https://drive.google.com/file/d/1cux7cMLNptIyG7clAlMxr5VLD5iK23c4/view?usp=sharing" target="_blank"
+     data-title="Vol I: Maiden Issue">
      <img src="vol-1.png" alt="Vol 1">
   </a>
 
   <a class="book-card pos-2" 
-     href="YOUR_LINK_HERE" target="_blank"
-     data-title="Green TVET Vol II: 2021 Issue">
+     href="https://drive.google.com/file/d/14sZLZr-xOJW0mFEiT8zm-WvXQxPdSI63/view?usp=sharing" target="_blank"
+     data-title="Vol II: 2021 Issue">
      <img src="vol-2.png" alt="Vol 2">
   </a>
 
   <a class="book-card pos-3" 
-     href="YOUR_LINK_HERE" target="_blank"
-     data-title="Green TVET Vol III: 2022 Issue">
+     href="https://drive.google.com/file/d/1W8Yd54GyJzGsS6iZ7qO-7GVv2VTxq1Hn/view?usp=sharing" target="_blank"
+     data-title="Vol III: 2022 Issue">
      <img src="vol-3.png" alt="Vol 3">
   </a>
 
   <a class="book-card pos-4" 
-     href="YOUR_LINK_HERE" target="_blank"
-     data-title="Green TVET Vol IV: 2023 Issue">
+     href="https://drive.google.com/file/d/1bq4juK1aM3Ar20sW9dn2QkZPMQ5yK4HY/view?usp=sharing" target="_blank"
+     data-title="Vol IV: 2023 Issue">
      <img src="vol-4.png" alt="Vol 4">
   </a>
 
   <a class="book-card pos-5" 
-     href="YOUR_LINK_HERE" target="_blank"
-     data-title="Green TVET Vol V: 2024 Issue">
+     href="https://drive.google.com/file/d/1abL6fGUIl4T6ZDnndEZTJskwwiejApha/view?usp=sharing" target="_blank"
+     data-title="Vol V: 2024 Issue">
      <img src="vol-5.png" alt="Vol 5">
   </a>
 
