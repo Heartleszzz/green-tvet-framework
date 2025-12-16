@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* General Layout */
+  body { font-family: 'Montserrat', sans-serif; background-color: transparent; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  
+  /* Connector Lines */
+  .tree { display: flex; justify-content: center; align-items: flex-start; gap: 40px; position: relative; }
+  .node { text-align: center; position: relative; }
+  
+  /* The Card Design */
+  .card {
+    background: white;
+    border-radius: 12px;
+    width: 220px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-top: 5px solid #46986c; /* GTC Green */
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Top Executive Card Style */
+  .executive { width: 280px; background: #2E684D; color: white; border-top: 5px solid #25F4EE; }
+  .executive h3 { color: white !important; }
+  .executive p { color: #ddd !important; }
+
+  /* Typography */
+  h3 { margin: 0 0 10px 0; font-size: 16px; color: #333; }
+  p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
+  
+  /* The "Hidden" Details (Reveal on Hover) */
+  .details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+    margin-top: 10px;
+    text-align: left;
+    background: #f9f9f9;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+  
+  .details ul { padding-left: 15px; margin: 5px 0; }
+  .details li { margin-bottom: 4px; }
+
+  /* HOVER ACTION: Expands the card */
+  .card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
+  .card:hover .details { max-height: 200px; opacity: 1; padding: 10px; }
+
+  /* Connecting Lines (CSS Magic) */
+  .line-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  /* Vertical Line from Top */
+  .line-down { width: 2px; height: 30px; background: #ccc; margin: 0 auto; }
+  
+  /* Horizontal Line connecting children */
+  .line-horizontal {
+    position: absolute;
+    top: -20px; /* Moves line up to connect */
+    height: 2px;
+    background: #ccc;
+    width: 66%; /* Width of the connection */
+    left: 17%;
+  }
+  
+  /* Individual vertical lines for children */
+  .connector {
+    width: 2px;
+    height: 20px;
+    background: #ccc;
+    margin: 0 auto 10px auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div class="node">
+    <div class="card executive">
+      <h3>Office of the Executive Director</h3>
+      <p>Strategic Leadership & Partnerships</p>
+    </div>
+    <div class="line-down"></div>
+  </div>
+
+  <div class="line-container">
+    <div class="line-horizontal"></div>
+  </div>
+
+  <div class="tree">
+    
+    <div class="node">
+      <div class="connector"></div>
+      <div class="card">
+        <h3>Innovation & Incubation</h3>
+        <p>Research & Enterprise</p>
+        <div class="details">
+          <ul>
+            <li>Green Tech Research</li>
+            <li>Prototyping</li>
+            <li>Enterprise Development</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="node">
+      <div class="connector"></div>
+      <div class="card">
+        <h3>Training & Extension</h3>
+        <p>Curriculum & Delivery</p>
+        <div class="details">
+          <ul>
+            <li>Curriculum Development</li>
+            <li>Training Delivery</li>
+            <li>Community Livelihood</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="node">
+      <div class="connector"></div>
+      <div class="card">
+        <h3>Advocacy & Policy</h3>
+        <p>Culture & Standards</p>
+        <div class="details">
+          <ul>
+            <li>Policy Formulation</li>
+            <li>Public Awareness</li>
+            <li>Green Culture Promotion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
