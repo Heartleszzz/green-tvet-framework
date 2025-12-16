@@ -2,150 +2,76 @@
 <html>
 <head>
 <style>
-  /* General Layout */
-  body { font-family: 'Montserrat', sans-serif; background-color: transparent; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-  
-  /* Connector Lines */
-  .tree { display: flex; justify-content: center; align-items: flex-start; gap: 40px; position: relative; }
-  .node { text-align: center; position: relative; }
-  
-  /* The Card Design */
-  .card {
-    background: white;
-    border-radius: 12px;
-    width: 220px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border-top: 5px solid #46986c; /* GTC Green */
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Top Executive Card Style */
-  .executive { width: 280px; background: #2E684D; color: white; border-top: 5px solid #25F4EE; }
-  .executive h3 { color: white !important; }
-  .executive p { color: #ddd !important; }
-
-  /* Typography */
-  h3 { margin: 0 0 10px 0; font-size: 16px; color: #333; }
-  p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
-  
-  /* The "Hidden" Details (Reveal on Hover) */
-  .details {
-    max-height: 0;
+  body { 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: transparent; 
     overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.4s ease;
-    opacity: 0;
-    margin-top: 10px;
-    text-align: left;
-    background: #f9f9f9;
-    padding: 0 10px;
-    border-radius: 8px;
-    font-size: 11px;
   }
-  
-  .details ul { padding-left: 15px; margin: 5px 0; }
-  .details li { margin-bottom: 4px; }
 
-  /* HOVER ACTION: Expands the card */
-  .card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
-  .card:hover .details { max-height: 200px; opacity: 1; padding: 10px; }
-
-  /* Connecting Lines (CSS Magic) */
-  .line-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
+  .image-container {
+    width: 90%; /* Adjusts size within the dashboard widget */
+    height: 90%;
+    overflow: hidden; /* Hides the parts that zoom out */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     position: relative;
-  }
-  
-  /* Vertical Line from Top */
-  .line-down { width: 2px; height: 30px; background: #ccc; margin: 0 auto; }
-  
-  /* Horizontal Line connecting children */
-  .line-horizontal {
-    position: absolute;
-    top: -20px; /* Moves line up to connect */
-    height: 2px;
-    background: #ccc;
-    width: 66%; /* Width of the connection */
-    left: 17%;
-  }
-  
-  /* Individual vertical lines for children */
-  .connector {
-    width: 2px;
-    height: 20px;
-    background: #ccc;
-    margin: 0 auto 10px auto;
+    cursor: zoom-in;
   }
 
+  .org-chart {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease; /* Smooth Zoom Effect */
+    transform-origin: center center;
+  }
+
+  /* THE HOVER EFFECT */
+  .image-container:hover .org-chart {
+    transform: scale(1.5); /* Zooms in 1.5x */
+    cursor: move;
+  }
+  
+  /* Optional: "Hover Me" Tooltip */
+  .tooltip {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0.8;
+  }
 </style>
 </head>
 <body>
 
-  <div class="node">
-    <div class="card executive">
-      <h3>Office of the Executive Director</h3>
-      <p>Strategic Leadership & Partnerships</p>
-    </div>
-    <div class="line-down"></div>
+  <div class="image-container" id="container">
+    <img src="org_structure.png" alt="Organization Chart" class="org-chart" id="chartImage">
+    <div class="tooltip">Hover to Zoom</div>
   </div>
 
-  <div class="line-container">
-    <div class="line-horizontal"></div>
-  </div>
+  <script>
+    // OPTIONAL: Makes the zoom follow the mouse cursor
+    const container = document.getElementById('container');
+    const img = document.getElementById('chartImage');
 
-  <div class="tree">
-    
-    <div class="node">
-      <div class="connector"></div>
-      <div class="card">
-        <h3>Innovation & Incubation</h3>
-        <p>Research & Enterprise</p>
-        <div class="details">
-          <ul>
-            <li>Green Tech Research</li>
-            <li>Prototyping</li>
-            <li>Enterprise Development</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="node">
-      <div class="connector"></div>
-      <div class="card">
-        <h3>Training & Extension</h3>
-        <p>Curriculum & Delivery</p>
-        <div class="details">
-          <ul>
-            <li>Curriculum Development</li>
-            <li>Training Delivery</li>
-            <li>Community Livelihood</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="node">
-      <div class="connector"></div>
-      <div class="card">
-        <h3>Advocacy & Policy</h3>
-        <p>Culture & Standards</p>
-        <div class="details">
-          <ul>
-            <li>Policy Formulation</li>
-            <li>Public Awareness</li>
-            <li>Green Culture Promotion</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-  </div>
+    container.addEventListener('mousemove', (e) => {
+      const { left, top, width, height } = container.getBoundingClientRect();
+      const x = (e.clientX - left) / width * 100;
+      const y = (e.clientY - top) / height * 100;
+      
+      img.style.transformOrigin = `${x}% ${y}%`;
+    });
+  </script>
 
 </body>
 </html>
